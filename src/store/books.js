@@ -19,11 +19,11 @@ export default new Vuex.Store({
   mutations: {
     toggleAvailability(state, book) {
       const index = state.books.findIndex(b => b.id === book.id);
-      state.books[index].available = false;
+      state.books[index].available = !state.books[index].available;
     }
   },
   actions: {
-    rentBook(context, book) {
+    async rentBook(context, book) {
       context.commit('toggleAvailability', book);
 
       /* commit multiple mutations
@@ -32,9 +32,8 @@ export default new Vuex.Store({
       */
 
       /* commit mutation after API call
-      LibraryAPI.rentBook(book, () => {
-        context.commit('toggleAvailability', book)
-      });
+      await LibraryAPI.rentBook(book);
+      context.commit('setUnavailable', book);
       */
     }
   }
